@@ -1,6 +1,8 @@
 const grid = document.querySelector(".grid")
 const scoreDisplay = document.getElementById("score")
 const width = 28 // 28 x 28 = 748 square
+let score = 0
+
 
 const layout = [
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -112,9 +114,46 @@ function movePacman(e) {
       break
   }
   squares[pacmanCurrentIndex].classList.add("pac-man")
-  //pacDotEaten()
+  pacDotEaten()
   //powerPelletEaten()
   //checkForGameOver()
   //checkForWin()
 }
 document.addEventListener("keyup", movePacman)
+
+// what happens when pac-man eats a pac-dot
+function pacDotEaten() {
+    if(squares[pacmanCurrentIndex].classList.contains("pac-dot")) {
+        score++
+        scoreDisplay.innerHTML = score
+        squares[pacmanCurrentIndex].classList.remove("pac-dot")
+    }
+}
+
+//create our ghost template
+
+class Ghost {
+    constructor(className, startIndex, speed) {
+        this.className = className
+        this.startIndex = startIndex
+        this.speed = speed
+        this.currentIndex = startIndex 
+        this.timerId = NaN
+    }
+}
+
+ghosts = [
+    new Ghost("blinky", 348, 250),
+    new Ghost("pinky", 376, 400),
+    new Ghost("inky", 351, 300),
+    new Ghost("clyde", 379, 500),
+]
+
+//draw my ghosts onto the grid
+ghosts.forEach(ghost => {
+    squares[ghost.currentIndex].classList.add(ghost.className)
+    squares[ghost.currentIndex].classList.add("ghost")
+    
+});
+
+squares[pacmanCurrentIndex].classList.add("pac-man")
